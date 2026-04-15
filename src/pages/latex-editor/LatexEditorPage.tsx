@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import { EditorPane } from './components/EditorPane';
 import { PreviewPane } from './components/PreviewPane';
-import { ToolBar } from './components/ToolBar';
 import { AIAssistPanel } from './components/AIAssistPanel';
 import { FileTree } from './components/FileTree';
 import { useLatexEditor } from '@/hooks/useLatexEditor';
@@ -34,10 +33,6 @@ export default function LatexEditorPage() {
     if (activeFile) updateFile(activeFile.id, content);
   };
 
-  const handleInsertSymbol = (command: string) => {
-    if (activeFile) updateFile(activeFile.id, activeFile.content + command);
-  };
-
   const handleCompile = async () => {
     if (!project) return;
     const mainFile = project.files.find(f => f.id === project.mainFileId);
@@ -65,48 +60,45 @@ export default function LatexEditorPage() {
   };
 
   return (
-    <div className="flex h-screen w-full bg-hermes-bg text-hermes-fg font-sans overflow-hidden relative">
-      <div className="hermes-noise"></div>
-      <div className="hermes-glow"></div>
-
-      {/* Sidebar Nav (Mocked to match design) */}
-      <aside className="w-[64px] bg-hermes-bg border-r border-hermes-border flex flex-col items-center py-5 gap-6 shrink-0 z-10 relative">
+    <div className="flex h-screen w-full bg-ide-base text-ide-text font-sans overflow-hidden">
+      {/* Sidebar Nav */}
+      <aside className="w-[64px] bg-ide-surface border-r border-ide-border flex flex-col items-center py-5 gap-6 shrink-0 z-10">
         <div 
           onClick={() => togglePanel('showExplorer')}
-          className={`w-[32px] h-[32px] rounded-lg flex items-center justify-center cursor-pointer transition-all ${settings.showExplorer ? 'bg-hermes-fg/10 border border-hermes-fg text-hermes-fg opacity-100' : 'bg-hermes-card text-hermes-fg opacity-60 hover:opacity-100 hover:bg-hermes-card-hover'}`}
+          className={`w-[32px] h-[32px] rounded-lg flex items-center justify-center cursor-pointer transition-all ${settings.showExplorer ? 'bg-ide-accent/20 text-ide-accent' : 'text-ide-muted hover:text-ide-text hover:bg-ide-panel'}`}
           title="Toggle Explorer"
         >
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </div>
-        <div className="w-[32px] h-[32px] rounded-lg bg-hermes-card flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 hover:bg-hermes-card-hover transition-all">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-5 h-5 text-hermes-fg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <div className="w-[32px] h-[32px] rounded-lg flex items-center justify-center cursor-pointer text-ide-muted hover:text-ide-text hover:bg-ide-panel transition-all">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0 relative z-10">
+      <div className="flex-1 flex flex-col min-w-0 z-10">
         {/* Header */}
-        <header className="h-[48px] border-b border-hermes-border flex items-center justify-between px-4 bg-hermes-card shrink-0">
-          <div className="flex items-center gap-3 text-[13px] font-display tracking-wide hermes-title-glow">
-            <span className="opacity-50">Projects /</span>
+        <header className="h-[48px] border-b border-ide-border flex items-center justify-between px-4 bg-ide-surface shrink-0">
+          <div className="flex items-center gap-3 text-[13px] font-medium">
+            <span className="text-ide-muted">Projects /</span>
             <strong>{project.name}</strong>
-            <span className="bg-hermes-warning text-hermes-bg px-1.5 py-0.5 rounded text-[10px] font-extrabold">NEW</span>
+            <span className="bg-ide-accent text-white px-1.5 py-0.5 rounded text-[10px] font-bold">NEW</span>
           </div>
-          <div className="flex bg-hermes-bg border border-hermes-border rounded-md p-0.5 gap-0.5">
+          <div className="flex bg-ide-base border border-ide-border rounded-md p-0.5 gap-0.5">
             <button 
               onClick={() => togglePanel('showExplorer')} 
-              className={`px-3 py-1 text-[11px] rounded cursor-pointer transition-colors ${settings.showExplorer ? 'bg-hermes-card text-hermes-fg' : 'text-hermes-fg/60 hover:text-hermes-fg hover:bg-hermes-card-hover'}`}
+              className={`px-3 py-1 text-[11px] font-medium rounded cursor-pointer transition-colors ${settings.showExplorer ? 'bg-ide-panel text-ide-text shadow-sm' : 'text-ide-muted hover:text-ide-text hover:bg-ide-panel/50'}`}
             >
               Explorer
             </button>
             <button 
               onClick={() => togglePanel('showEditor')} 
-              className={`px-3 py-1 text-[11px] rounded cursor-pointer transition-colors ${settings.showEditor ? 'bg-hermes-card text-hermes-fg' : 'text-hermes-fg/60 hover:text-hermes-fg hover:bg-hermes-card-hover'}`}
+              className={`px-3 py-1 text-[11px] font-medium rounded cursor-pointer transition-colors ${settings.showEditor ? 'bg-ide-panel text-ide-text shadow-sm' : 'text-ide-muted hover:text-ide-text hover:bg-ide-panel/50'}`}
             >
               Editor
             </button>
             <button 
               onClick={() => togglePanel('showPreview')} 
-              className={`px-3 py-1 text-[11px] rounded cursor-pointer transition-colors ${settings.showPreview ? 'bg-hermes-card text-hermes-fg' : 'text-hermes-fg/60 hover:text-hermes-fg hover:bg-hermes-card-hover'}`}
+              className={`px-3 py-1 text-[11px] font-medium rounded cursor-pointer transition-colors ${settings.showPreview ? 'bg-ide-panel text-ide-text shadow-sm' : 'text-ide-muted hover:text-ide-text hover:bg-ide-panel/50'}`}
             >
               Preview
             </button>
@@ -114,7 +106,7 @@ export default function LatexEditorPage() {
           <div className="flex gap-2">
             <button 
               onClick={handleCompile}
-              className="bg-hermes-warning text-hermes-bg px-3 py-1 rounded text-[11px] font-semibold cursor-pointer hover:opacity-90 transition-opacity"
+              className="bg-ide-accent text-white px-3 py-1 rounded text-[11px] font-semibold cursor-pointer hover:bg-ide-accent-hover transition-colors"
             >
               Compile PDF
             </button>
@@ -122,43 +114,44 @@ export default function LatexEditorPage() {
         </header>
 
         {/* Workspace */}
-        <main className="flex-1 flex overflow-hidden">
-          <PanelGroup direction="horizontal">
+        <main className="flex-1 flex overflow-hidden bg-ide-base p-2 gap-2">
+          <PanelGroup direction="horizontal" autoSaveId="ide-workspace-layout">
             {settings.showExplorer && (
               <>
-                <Panel defaultSize={20} minSize={10} maxSize={50} collapsible={true}>
-                  <FileTree 
-                    files={project.files} 
-                    activeFileId={activeFile?.id || null} 
-                    onSelectFile={setActiveFileId} 
-                    onClose={() => togglePanel('showExplorer')}
-                  />
+                <Panel id="explorer-panel" order={1} defaultSize={20} minSize={10} collapsible={true}>
+                  <div className="h-full rounded-xl border border-ide-border overflow-hidden bg-ide-surface">
+                    <FileTree 
+                      files={project.files} 
+                      activeFileId={activeFile?.id || null} 
+                      onSelectFile={setActiveFileId} 
+                      onClose={() => togglePanel('showExplorer')}
+                    />
+                  </div>
                 </Panel>
-                <PanelResizeHandle className="w-[4px] group bg-transparent hover:bg-hermes-fg/20 active:bg-hermes-fg/30 transition-colors cursor-col-resize flex flex-col items-center justify-center z-10">
-                  <div className="w-[1px] h-full bg-hermes-border group-hover:bg-transparent group-active:bg-transparent" />
+                <PanelResizeHandle id="explorer-resize" className="w-[8px] group bg-transparent hover:bg-ide-accent/20 active:bg-ide-accent/30 transition-colors cursor-col-resize flex flex-col items-center justify-center z-10 rounded-full mx-1">
+                  <div className="w-[2px] h-8 bg-ide-border group-hover:bg-ide-accent group-active:bg-ide-accent rounded-full" />
                 </PanelResizeHandle>
               </>
             )}
 
-            <Panel defaultSize={settings.showExplorer ? 80 : 100}>
-              <div className="flex-1 flex flex-col h-full min-w-0">
-                {settings.showEditor && <ToolBar onInsert={handleInsertSymbol} />}
+            <Panel id="main-panel" order={2} defaultSize={settings.showExplorer ? 80 : 100}>
+              <div className="flex-1 flex flex-col h-full min-w-0 rounded-xl border border-ide-border overflow-hidden bg-ide-surface">
                 <div className="flex-1 overflow-hidden">
-                  <PanelGroup direction="horizontal">
+                  <PanelGroup direction="horizontal" autoSaveId="ide-editor-preview-layout">
                     {settings.showEditor && (
-                      <Panel defaultSize={50} minSize={20}>
+                      <Panel id="editor-panel" order={1} defaultSize={50} minSize={20}>
                         <EditorPane content={activeFile?.content || ''} onChange={handleContentChange} />
                       </Panel>
                     )}
                     
                     {settings.showEditor && settings.showPreview && (
-                      <PanelResizeHandle className="w-[4px] group bg-transparent hover:bg-hermes-fg/20 active:bg-hermes-fg/30 transition-colors cursor-col-resize flex flex-col items-center justify-center z-10">
-                        <div className="w-[1px] h-full bg-hermes-border group-hover:bg-transparent group-active:bg-transparent" />
+                      <PanelResizeHandle id="editor-preview-resize" className="w-[8px] group bg-transparent hover:bg-ide-accent/20 active:bg-ide-accent/30 transition-colors cursor-col-resize flex flex-col items-center justify-center z-10 mx-1">
+                        <div className="w-[2px] h-8 bg-ide-border group-hover:bg-ide-accent group-active:bg-ide-accent rounded-full" />
                       </PanelResizeHandle>
                     )}
 
                     {settings.showPreview && (
-                      <Panel defaultSize={50} minSize={20}>
+                      <Panel id="preview-panel" order={2} defaultSize={50} minSize={20}>
                         <PreviewPane content={activeFile?.content || ''} />
                       </Panel>
                     )}
@@ -169,23 +162,25 @@ export default function LatexEditorPage() {
           </PanelGroup>
 
           {showAI && (
-            <AIAssistPanel 
-              messages={messages}
-              isGenerating={isGenerating}
-              onSendMessage={(prompt) => sendMessage(prompt, activeFile?.content || '')}
-              onClose={() => setShowAI(false)}
-            />
+            <div className="rounded-xl border border-ide-border overflow-hidden bg-ide-surface shrink-0 h-full">
+              <AIAssistPanel 
+                messages={messages}
+                isGenerating={isGenerating}
+                onSendMessage={(prompt) => sendMessage(prompt, activeFile?.content || '')}
+                onClose={() => setShowAI(false)}
+              />
+            </div>
           )}
         </main>
 
         {/* Footer Status Bar */}
-        <footer className="h-[24px] bg-hermes-card border-t border-hermes-border flex items-center px-3 text-[10px] justify-between shrink-0 font-mono">
-          <div className="flex gap-4">
+        <footer className="h-[28px] bg-ide-surface border-t border-ide-border flex items-center px-4 text-[11px] justify-between shrink-0 font-mono text-ide-muted">
+          <div className="flex gap-6">
+            <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-ide-success"></div> Connected</span>
             <span>Ln 10, Col 14</span>
             <span>UTF-8</span>
-            <span className="text-hermes-success">● Connected to Agent</span>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             <span>LaTeX: article</span>
             <span>Syncing...</span>
           </div>

@@ -1,31 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Mondwest", system-ui, sans-serif;
-  --font-display: "RulesExpanded", "RulesCompressed", system-ui, sans-serif;
-  --font-mono: "Courier Prime", monospace;
-  --font-fallback: "Collapse", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-  --color-hermes-bg: #041C1C;
-  --color-hermes-fg: #ffe6cb;
-  --color-hermes-card: #062424;
-  --color-hermes-card-hover: #0a2e2e;
-  --color-hermes-border: rgba(255, 230, 203, 0.15);
-  --color-hermes-success: #4ade80;
-  --color-hermes-warning: #ffbd38;
-  --color-hermes-error: #fb2c36;
+  --color-ide-base: #0B0F19;
+  --color-ide-surface: #111827;
+  --color-ide-panel: #1F2937;
+  --color-ide-border: #374151;
+  --color-ide-text: #F3F4F6;
+  --color-ide-muted: #9CA3AF;
+  --color-ide-accent: #3B82F6;
+  --color-ide-accent-hover: #60A5FA;
+  --color-ide-success: #10B981;
+  --color-ide-warning: #F59E0B;
+  --color-ide-error: #EF4444;
 }
 
 @layer base {
   ::selection {
-    background-color: #ffe6cb;
-    color: #041C1C;
+    background-color: rgba(59, 130, 246, 0.3);
+    color: inherit;
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
@@ -33,41 +34,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 230, 203, 0.1);
-    border-radius: 2px;
+    background: var(--color-ide-border);
+    border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 230, 203, 0.3);
+    background: var(--color-ide-muted);
   }
-}
-
-.hermes-noise {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.1;
-  mix-blend-mode: color-dodge;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-.hermes-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 49;
-  opacity: 0.22;
-  mix-blend-mode: lighten;
-  background: radial-gradient(circle at 0% 0%, rgba(255, 189, 56, 0.35) 0%, transparent 50%);
-}
-
-.hermes-title-glow {
-  mix-blend-mode: plus-lighter;
 }

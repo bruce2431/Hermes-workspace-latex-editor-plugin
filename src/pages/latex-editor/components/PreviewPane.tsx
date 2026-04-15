@@ -77,13 +77,13 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
   }, []);
 
   return (
-    <section className="flex flex-col h-full bg-hermes-bg font-mono">
-      <div className="h-[32px] bg-hermes-card border-b border-hermes-border flex items-center justify-between px-3 text-[11px] uppercase tracking-wider text-hermes-fg/60 shrink-0">
+    <section className="flex flex-col h-full bg-ide-surface font-sans">
+      <div className="h-[40px] bg-ide-panel border-b border-ide-border flex items-center justify-between px-4 text-[12px] font-medium text-ide-text shrink-0">
         <span>Live Preview</span>
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setIsFit(true)}
-            className={`px-2 py-0.5 rounded transition-colors ${isFit ? 'bg-hermes-fg text-hermes-bg' : 'hover:bg-hermes-card-hover text-hermes-fg'}`}
+            className={`px-2.5 py-1 rounded-md transition-colors text-[11px] font-medium ${isFit ? 'bg-ide-accent text-white' : 'hover:bg-ide-border text-ide-muted hover:text-ide-text'}`}
           >
             Fit
           </button>
@@ -93,7 +93,7 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
               setIsFit(false);
               setZoom(Number(e.target.value) / 100);
             }}
-            className="bg-transparent border border-hermes-border rounded px-1 py-0.5 outline-none text-hermes-fg"
+            className="bg-ide-base border border-ide-border rounded-md px-2 py-1 outline-none text-ide-text text-[11px] font-medium focus:border-ide-accent"
           >
             <option value={50}>50%</option>
             <option value={75}>75%</option>
@@ -106,21 +106,21 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
       </div>
       <div 
         ref={containerRef} 
-        className="flex-1 overflow-auto p-5 text-black flex justify-center items-start bg-hermes-bg"
+        className="flex-1 overflow-auto p-8 text-black flex justify-center items-start bg-ide-base"
       >
         <div 
-          className="bg-[#ffe6cb] shadow-lg origin-top transition-transform duration-75 ease-out text-left"
+          className="bg-white shadow-xl origin-top transition-transform duration-75 ease-out text-left rounded-sm"
           style={{ 
             width: '800px', 
             minHeight: '1131px', // A4 aspect ratio
             transform: `scale(${zoom})`,
-            padding: '40px',
+            padding: '48px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            color: '#041C1C' // Dark text on the warm paper
+            color: '#111827' // Dark slate text for PDF
           }}
         >
-          <div ref={contentRef} className="text-[16px] leading-relaxed font-sans" />
+          <div ref={contentRef} className="text-[16px] leading-relaxed font-serif" />
         </div>
       </div>
     </section>
