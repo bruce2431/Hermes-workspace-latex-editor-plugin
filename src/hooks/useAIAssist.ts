@@ -6,6 +6,10 @@ export function useAIAssist() {
   const [messages, setMessages] = useState<AIMessage[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const appendMessage = useCallback((msg: AIMessage) => {
+    setMessages(prev => [...prev, msg]);
+  }, []);
+
   const sendMessage = useCallback(async (prompt: string, context: string) => {
     const userMsg: AIMessage = { id: Date.now().toString(), role: 'user', content: prompt, timestamp: Date.now() };
     setMessages(prev => [...prev, userMsg]);
@@ -38,6 +42,7 @@ export function useAIAssist() {
     messages,
     isGenerating,
     sendMessage,
+    appendMessage,
     clearMessages
   };
 }

@@ -77,13 +77,13 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
   }, []);
 
   return (
-    <section className="flex flex-col h-full bg-ide-surface font-sans">
-      <div className="h-[40px] bg-ide-panel border-b border-ide-border flex items-center justify-between px-4 text-[12px] font-medium text-ide-text shrink-0">
+    <section className="flex flex-col h-full bg-primary-900 font-sans">
+      <div className="h-[40px] bg-primary-800 border-b border-primary-800 flex items-center justify-between px-4 text-xs font-medium text-primary-100 shrink-0">
         <span>Live Preview</span>
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setIsFit(true)}
-            className={`px-2.5 py-1 rounded-md transition-colors text-[11px] font-medium ${isFit ? 'bg-ide-accent text-white' : 'hover:bg-ide-border text-ide-muted hover:text-ide-text'}`}
+            className={`px-2.5 py-1 rounded-md transition-colors text-xs font-medium ${isFit ? 'bg-primary-600 text-white' : 'hover:bg-primary-800 text-primary-500 hover:text-primary-100'}`}
           >
             Fit
           </button>
@@ -93,7 +93,7 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
               setIsFit(false);
               setZoom(Number(e.target.value) / 100);
             }}
-            className="bg-ide-base border border-ide-border rounded-md px-2 py-1 outline-none text-ide-text text-[11px] font-medium focus:border-ide-accent"
+            className="bg-primary-950 border border-primary-800 rounded-md px-2 py-1 outline-none text-primary-100 text-xs font-medium focus:border-primary-600"
           >
             <option value={50}>50%</option>
             <option value={75}>75%</option>
@@ -106,7 +106,7 @@ export const PreviewPane: React.FC<PreviewPaneProps> = ({ content }) => {
       </div>
       <div 
         ref={containerRef} 
-        className="flex-1 overflow-auto p-8 text-black flex justify-center items-start bg-ide-base"
+        className="flex-1 overflow-auto p-8 text-black flex justify-center items-start bg-primary-950"
       >
         <div 
           className="bg-white shadow-xl origin-top transition-transform duration-75 ease-out text-left rounded-sm"

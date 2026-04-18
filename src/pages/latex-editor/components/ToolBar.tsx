@@ -23,16 +23,16 @@ export const ToolBar: React.FC<ToolBarProps> = ({ onInsert }) => {
   ];
 
   return (
-    <div className="h-[44px] border-b border-ide-border flex items-center gap-1.5 px-3 bg-ide-panel shrink-0 font-mono overflow-x-auto">
+    <div className="h-[44px] border-b border-primary-800 flex items-center gap-1.5 px-3 bg-primary-800 shrink-0 font-mono overflow-x-auto">
       {symbols.map((sym, idx) => {
         if (sym.divider) {
-          return <div key={`div-${idx}`} className="w-[1px] h-[20px] bg-ide-border mx-1" />;
+          return <div key={`div-${idx}`} className="w-[1px] h-[20px] bg-primary-800 mx-1" />;
         }
         return (
           <button
             key={sym.cmd}
             onClick={() => onInsert(sym.cmd!)}
-            className="min-w-[32px] h-[32px] px-1 flex items-center justify-center rounded-md text-[14px] text-ide-muted hover:bg-ide-surface hover:text-ide-text border border-transparent hover:border-ide-border cursor-pointer transition-all shadow-sm"
+            className="min-w-[32px] h-[32px] px-1 flex items-center justify-center rounded-md text-[14px] text-primary-500 hover:bg-primary-900 hover:text-primary-100 border border-transparent hover:border-primary-800 cursor-pointer transition-all shadow-sm"
             title={sym.cmd}
           >
             {sym.display}
